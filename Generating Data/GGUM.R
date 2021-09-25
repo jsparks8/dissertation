@@ -1,6 +1,7 @@
 # This script will generate item responses to the GGUM
 
 library(tidyverse)
+library(GGUM)
 
 # Make sure values are reproducible
 set.seed(1)
@@ -76,3 +77,31 @@ for (i in 1:length(thetas)) {
     responses <- bind_rows(responses, prob)
   }
 }
+
+# Format data for GGUM package
+ggum_df <- responses %>%
+  dplyr::select(theta, item, rsp, rt) %>%
+  tidyr::pivot_wider(values_from=c(rsp, rt), names_from=item) %>%
+  dplyr::select(starts_with("rsp"))  %>%
+  mutate(across(everything(), as.numeric)) %>%
+  as.matrix()
+
+# Export data to 'GGUM2004':
+export.GGUM2004(ggum_df)
+# Write command file:
+I<- 20
+C<- 3
+write.GGUM2004(I, C, model = "GGUM")
+# Run 'GGUM2004':
+res.GGUM2004 <- run.GGUM2004(prog.dir = "C:/Ggum")
+
+read.item.GGUM2004(temp.dir = "C:/Ggum/TEMPFILE")
+read.person.GGUM2004(temp.dir = "C:/Ggum/TEMPFILE")
+
+# Fit the GUM:
+fit1 <- GUM(ggum_df, C)
+th1  <- Theta.EAP(fit1)
+# Plot ICCs:
+plotICC(fit1, th1, items = 1, quiet = TRUE)
+plotTCC(fit1, th1)
+
