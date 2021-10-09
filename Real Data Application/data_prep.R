@@ -1,14 +1,21 @@
-# load libraries
+## load libraries #----
 
 library(tidyverse)
 library(ggplot2)
 library(readxl)
 library(GGUM)
+library(psych)
 
-# load merged data
+## load merged data #----
 data.raw <- readxl::read_excel(path = "6pt_attdata.xlsx")
 
-# prep gun control dataset
+## load question test #----
+questions <- readxl::read_excel(path = "Attitude_Questions.xlsx") %>%
+  unite("text", c(Statement1, Statement2, Statement3), na.rm=TRUE, sep = " ") %>%
+  dplyr::mutate(Gun = paste0("Gq", Gun))
+  
+
+## prep gun control dataset #----
 data <- data.raw %>%
   dplyr::filter(Session == "1" & guncorr > 0.7) %>%
   dplyr::select(
@@ -29,25 +36,45 @@ data <- data.raw %>%
     RTG61, RTG62, RTG63
   ) %>%
   tidyr::drop_na() %>%
-  dplyr::mutate(Subject = as.numeric(row.names(.)))
+  dplyr::mutate(Subject = as.numeric(row.names(.))) %>%
+  # Collapse 1-2 and 5-6 responses
+  mutate(across(starts_with("Gq"),
+                ~recode(., "1"="1", "2"= "1", "3"="2", "4"="3", "5"="4", "6"="4")))
 
-# GGUM modeling
+## PCA to determine diminesality of the dataset #----
+pc <- psych::principal(data[,c(2:64)], nfactors=1)
+fa.parallel(data[,c(2:64)], fa="pc")
+
+# Discard any items with a communality < 0.3
+communalities <- data.frame(pc$communality) %>% rownames_to_column() %>%
+  dplyr::mutate(removal_flag = case_when(
+                  pc.communality < 0.3 ~ 1,
+                  pc.communality >= 0.3 ~ 0,
+                  TRUE ~ NA_real_
+                    )
+  )
+
+keep <- communalities %>% 
+  dplyr::filter(removal_flag == 0) %>%
+  dplyr::pull(rowname)
+
+table(communalities$removal_flag, useNA="ifany")
+
+# 25/63 items seems like a lot to remove?
+which <- communalities %>%
+  dplyr::left_join(questions, by=c("rowname" = "Gun"))
+
+## GGUM modeling #----
 ggum_data <- data %>%
   dplyr::select(
-    Gq1, Gq2, Gq3, Gq4, Gq5, Gq6, Gq7, Gq8, Gq9, Gq10,
-    Gq11, Gq12, Gq13, Gq14, Gq15, Gq16, Gq17, Gq18, Gq19, Gq20,
-    Gq21, Gq22, Gq23, Gq24, Gq25, Gq26, Gq27, Gq28, Gq29, Gq30,
-    Gq31, Gq32, Gq33, Gq34, Gq35, Gq36, Gq37, Gq38, Gq39, Gq40,
-    Gq41, Gq42, Gq43, Gq44, Gq45, Gq46, Gq47, Gq48, Gq49, Gq50,
-    Gq51, Gq52, Gq53, Gq54, Gq55, Gq56, Gq57, Gq58, Gq59, Gq60,
-    Gq61, Gq62, Gq63
+    !!keep
   )
 
 ggumdata <- data.matrix(ggum_data) - matrix(1, nrow = 852, ncol = 63)
 
-# Exporting to run in GGUM2004
-export.GGUM2004(ggumdata, data.file = "ggumdata", data.dir = "C:/Users/Jordan Sparks/Documents/attdiss")
-write.GGUM2004(I = 63, C = 5, model = "GGUM", cmd.file = "ggumcmd", data.file = "ggumdata", data.dir = "C:/Users/Jordan Sparks/Documents/attdiss") # change spurious comma to .#
+## Exporting to run in GGUM2004 #----
+# export.GGUM2004(ggumdata, data.file = "ggumdata", data.dir = "C:/Users/Jordan Sparks/Documents/attdiss")
+# write.GGUM2004(I = 63, C = 5, model = "GGUM", cmd.file = "ggumcmd", data.file = "ggumdata", data.dir = "C:/Users/Jordan Sparks/Documents/attdiss") # change spurious comma to .#
 
-# Saving data for future use
-saveRDS(data, file = "data.rds")
+## Saving data for future use #----
+# saveRDS(data, file = "data.rds")
