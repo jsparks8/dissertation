@@ -39,10 +39,10 @@ data <- data.raw %>%
   dplyr::mutate(Subject = as.numeric(row.names(.))) %>%
   # Collapse 1-2 and 5-6 responses
   mutate(across(starts_with("Gq"),
-                ~recode(., "1"="1", "2"= "1", "3"="2", "4"="3", "5"="4", "6"="4")))
+                ~recode(., "1"=1, "2"= 2, "3"=2, "4"=3, "5"=3, "6"=4)))
 
 ## PCA to determine diminesality of the dataset #----
-pc <- psych::principal(data[,c(2:64)], nfactors=1)
+pc <- psych::principal(data[,c(2:64)], nfactors=2)
 fa.parallel(data[,c(2:64)], fa="pc")
 
 # Discard any items with a communality < 0.3
@@ -60,7 +60,7 @@ keep <- communalities %>%
 
 table(communalities$removal_flag, useNA="ifany")
 
-# 25/63 items seems like a lot to remove?
+# 17/63 items seems like a lot to remove?
 which <- communalities %>%
   dplyr::left_join(questions, by=c("rowname" = "Gun"))
 
@@ -70,11 +70,22 @@ ggum_data <- data %>%
     !!keep
   )
 
-ggumdata <- data.matrix(ggum_data) - matrix(1, nrow = 852, ncol = 63)
+ggumdata <- data.matrix(ggum_data) - matrix(1, nrow =  nrow(ggum_data), ncol = ncol(ggum_data))
 
 ## Exporting to run in GGUM2004 #----
-# export.GGUM2004(ggumdata, data.file = "ggumdata", data.dir = "C:/Users/Jordan Sparks/Documents/attdiss")
-# write.GGUM2004(I = 63, C = 5, model = "GGUM", cmd.file = "ggumcmd", data.file = "ggumdata", data.dir = "C:/Users/Jordan Sparks/Documents/attdiss") # change spurious comma to .#
+export.GGUM2004(ggumdata, data.file = "ggumdata", data.dir = paste(getwd()))
+write.GGUM2004(I = ncol(ggum_data), C = 3, model = "GGUM", cmd.file = "ggumcmd", data.file = "ggumdata", data.dir = paste(getwd())) # change spurious comma to .#
+
+# Run 'GGUM2004' #----
+res.GGUM2004 <- run.GGUM2004(
+  cmd.file = "ggumcmd",
+  data.file = "ggumdata",
+  datacmd.dir = paste(getwd()),
+  prog.dir = "C:/Ggum")
+
+# Examine item locations
+locations <- data.frame(question = keep, delta = res.GGUM2004[["delta"]])
+stripchart(locations$delta, pch = "+")
 
 ## Saving data for future use #----
-# saveRDS(data, file = "data.rds")
+saveRDS(data, file = "data.rds")
