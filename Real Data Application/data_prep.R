@@ -1,10 +1,6 @@
 ## load libraries #----
-
 library(tidyverse)
-library(ggplot2)
 library(readxl)
-library(GGUM)
-library(psych)
 
 ## load merged data #----
 data.raw <- readxl::read_excel(path = "6pt_attdata.xlsx")
@@ -13,7 +9,6 @@ data.raw <- readxl::read_excel(path = "6pt_attdata.xlsx")
 questions <- readxl::read_excel(path = "Attitude_Questions.xlsx") %>%
   unite("text", c(Statement1, Statement2, Statement3), na.rm=TRUE, sep = " ") %>%
   dplyr::mutate(Gun = paste0("Gq", Gun))
-  
 
 ## prep gun control dataset #----
 data <- data.raw %>%
@@ -37,55 +32,11 @@ data <- data.raw %>%
   ) %>%
   tidyr::drop_na() %>%
   dplyr::mutate(Subject = as.numeric(row.names(.))) %>%
-  # Collapse 1-2 and 5-6 responses
+  # Collapse 2-3 and 4-5 responses
+  # Change to 1-2 and 5-6 ***
   mutate(across(starts_with("Gq"),
-                ~recode(., "1"=1, "2"= 2, "3"=2, "4"=3, "5"=3, "6"=4)))
-
-## PCA to determine diminesality of the dataset #----
-pc <- psych::principal(data[,c(2:64)], nfactors=2)
-fa.parallel(data[,c(2:64)], fa="pc")
-
-# Discard any items with a communality < 0.3
-communalities <- data.frame(pc$communality) %>% rownames_to_column() %>%
-  dplyr::mutate(removal_flag = case_when(
-                  pc.communality < 0.3 ~ 1,
-                  pc.communality >= 0.3 ~ 0,
-                  TRUE ~ NA_real_
-                    )
-  )
-
-keep <- communalities %>% 
-  dplyr::filter(removal_flag == 0) %>%
-  dplyr::pull(rowname)
-
-table(communalities$removal_flag, useNA="ifany")
-
-# 17/63 items seems like a lot to remove?
-which <- communalities %>%
-  dplyr::left_join(questions, by=c("rowname" = "Gun"))
-
-## GGUM modeling #----
-ggum_data <- data %>%
-  dplyr::select(
-    !!keep
-  )
-
-ggumdata <- data.matrix(ggum_data) - matrix(1, nrow =  nrow(ggum_data), ncol = ncol(ggum_data))
-
-## Exporting to run in GGUM2004 #----
-export.GGUM2004(ggumdata, data.file = "ggumdata", data.dir = paste(getwd()))
-write.GGUM2004(I = ncol(ggum_data), C = 3, model = "GGUM", cmd.file = "ggumcmd", data.file = "ggumdata", data.dir = paste(getwd())) # change spurious comma to .#
-
-# Run 'GGUM2004' #----
-res.GGUM2004 <- run.GGUM2004(
-  cmd.file = "ggumcmd",
-  data.file = "ggumdata",
-  datacmd.dir = paste(getwd()),
-  prog.dir = "C:/Ggum")
-
-# Examine item locations
-locations <- data.frame(question = keep, delta = res.GGUM2004[["delta"]])
-stripchart(locations$delta, pch = "+")
+                ~recode(., "1"=1, "2"= 1, "3"=2, "4"=3, "5"=4, "6"=4)))
 
 ## Saving data for future use #----
 saveRDS(data, file = "data.rds")
+saveRDS(questions, file = "questions.rds")
