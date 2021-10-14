@@ -5,8 +5,9 @@ library(ggplot2)
 library(readxl)
 library(psych)
 
-# Loading data
+## load data prepped in data_prep.R #----
 data <- readRDS("data.rds")
+questions <- readRDS("questions.rds")
 
 # Loading estimates
 items <- readxl::read_excel(path = "itemparameters.xlsx")
