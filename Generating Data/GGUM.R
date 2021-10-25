@@ -72,36 +72,64 @@ for (i in 1:length(thetas)) {
     # Generating response times
     rt <- (7500 - (abs(1 - abs(theta - b)) * .75)) + (500 * (-1 + (1 - (-1)) * runif(1)))
 
-    prob <- data.frame(theta = i, item = j, p0, p1, p2, p3, raw, rsp, rt)
+    prob <- data.frame(id = i, item = j, p0, p1, p2, p3, raw, rsp, rt)
 
     responses <- bind_rows(responses, prob)
   }
 }
 
-# Format data for GGUM package
-ggum_df <- responses %>%
+
+# Format data to use in stan
+stan_rsp <- responses %>%
   dplyr::select(theta, item, rsp, rt) %>%
+  dplyr::mutate(rsp = rsp + 1)%>%
   tidyr::pivot_wider(values_from=c(rsp, rt), names_from=item) %>%
   dplyr::select(starts_with("rsp"))  %>%
-  mutate(across(everything(), as.numeric)) %>%
-  as.matrix()
+  mutate(across(everything(), as.numeric))
 
-# Export data to 'GGUM2004':
-export.GGUM2004(ggum_df)
-# Write command file:
-I<- 20
-C<- 3
-write.GGUM2004(I, C, model = "GGUM")
-# Run 'GGUM2004':
-res.GGUM2004 <- run.GGUM2004(prog.dir = "C:/Ggum")
+stan_b <- locations
 
-read.item.GGUM2004(temp.dir = "C:/Ggum/TEMPFILE")
-read.person.GGUM2004(temp.dir = "C:/Ggum/TEMPFILE")
+stan_theta <- thetas
 
-# Fit the GUM:
-fit1 <- GUM(ggum_df, C)
-th1  <- Theta.EAP(fit1)
-# Plot ICCs:
-plotICC(fit1, th1, items = 1, quiet = TRUE)
-plotTCC(fit1, th1)
+stan_tau <- thresholds[,1:4]
 
+wb <- openxlsx::createWorkbook()
+openxlsx::addWorksheet(wb, "resp")
+openxlsx::addWorksheet(wb, "b")
+openxlsx::addWorksheet(wb, "tau")
+openxlsx::addWorksheet(wb, "theta")
+
+openxlsx::writeData(wb, "resp", stan_rsp, colNames=FALSE, rowNames=FALSE)
+openxlsx::writeData(wb, "b", stan_b, colNames=FALSE, rowNames=FALSE)
+openxlsx::writeData(wb, "tau", stan_tau, colNames=FALSE, rowNames=FALSE)
+openxlsx::writeData(wb, "theta", stan_theta, colNames=FALSE, rowNames=FALSE)
+
+openxlsx::saveWorkbook(wb, file = "Jordan_GGUM_data.xlsx", overwrite=FALSE)
+
+# # Format data for GGUM package
+# ggum_df <- responses %>%
+#   dplyr::select(id, item, rsp, rt) %>%
+#   tidyr::pivot_wider(values_from=c(rsp, rt), names_from=item) %>%
+#   dplyr::select(starts_with("rsp"))  %>%
+#   mutate(across(everything(), as.numeric)) %>%
+#   as.matrix()
+# 
+# # Export data to 'GGUM2004':
+# export.GGUM2004(ggum_df)
+# # Write command file:
+# I<- 20
+# C<- 3
+# write.GGUM2004(I, C, model = "GGUM")
+# # Run 'GGUM2004':
+# res.GGUM2004 <- run.GGUM2004(prog.dir = "C:/Ggum")
+# 
+# read.item.GGUM2004(temp.dir = "C:/Ggum/TEMPFILE")
+# read.person.GGUM2004(temp.dir = "C:/Ggum/TEMPFILE")
+# 
+# # Fit the GUM:
+# fit1 <- GUM(ggum_df, C)
+# th1  <- Theta.EAP(fit1)
+# # Plot ICCs:
+# plotICC(fit1, th1, items = 1, quiet = TRUE)
+# plotTCC(fit1, th1)
+# 
