@@ -13,12 +13,17 @@ invisible(lapply(packages, library, character.only = TRUE))
 rstan_options(auto_write = TRUE)
 options(mc.cores = parallel::detectCores())
 
+starting.directory = getwd()
+output_dir <- file.path(starting.directory, Sys.Date(), fsep="/")
+
+fileName <- file.path(starting.directory, "Jordan_GGUM_data.xlsx", fsep="/")
+stan_file <- file.path(starting.directory, "StanGGUM-master", "ggum_new.stan", fsep="/")
+
 #set up working directory 
 #setwd('')
 ##################################################################################
 
 # GGUM --------------------------------------------------------------
-fileName = "Jordan_GGUM_data.xlsx"
 resp <- readWorkbook(fileName, sheet="resp", colNames=FALSE, sep=",")
 resp <- as.matrix(resp)
 I <- dim(resp)[1]
@@ -36,13 +41,13 @@ initfun <- function(){
   )
 }
 
-chains <- 3
+chains <- 2
 iter <- 2000
 warmup <- 1000
 
 #run 1 chain to diagnose whether the stan code works properly
 tic("Test (1 Chain, 50 Iterations)")
-GGUM = stan(file = "StanGGUM-master/ggum_new.stan", data = GGUMdata, init = initfun, chains = 1, iter =50)
+GGUM = stan(file = stan_file, data = GGUMdata, init = initfun, chains = 1, iter =50)
 toc(log = TRUE)
 
 #run additional 2000 iterations with 3 chains
@@ -54,7 +59,8 @@ toc(log = TRUE)
 #toc(log = TRUE)
 log.txt <- tic.log(format = TRUE)
 
-output_dir <- file.path("C:","Users","Jordan","Documents","R","dissertation", Sys.Date(), fsep="/")
+starting.directory = getwd()
+output_dir <- file.path(starting.directory, Sys.Date(), fsep="/")
 
 if (!dir.exists(output_dir)){
   dir.create(output_dir)
