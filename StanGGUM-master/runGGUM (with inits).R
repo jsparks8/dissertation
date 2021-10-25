@@ -1,9 +1,15 @@
-library(tidyverse)
-library(ggplot2)
-library(openxlsx)
-###load Rstan package
-library(rstan)
-library(tictoc)
+# Package names
+packages <- c("tidyverse", "ggplot2", "openxlsx", "rstan", "tictoc", "gridExtra")
+
+# Install packages not yet installed
+installed_packages <- packages %in% rownames(installed.packages())
+if (any(installed_packages == FALSE)) {
+  install.packages(packages[!installed_packages])
+}
+
+# Packages loading
+invisible(lapply(packages, library, character.only = TRUE))
+
 rstan_options(auto_write = TRUE)
 options(mc.cores = parallel::detectCores())
 
@@ -31,8 +37,8 @@ initfun <- function(){
 }
 
 chains <- 3
-iter <- 15000
-warmup <- 10000
+iter <- 2000
+warmup <- 1000
 
 #run 1 chain to diagnose whether the stan code works properly
 tic("Test (1 Chain, 50 Iterations)")
@@ -89,7 +95,7 @@ df <- estimates %>%
   dplyr::left_join(bind_rows(a, b, tau, theta), by="parameter") %>%
   dplyr::mutate(estimate = round(estimate, digits=4),
                 truth = round(truth, digits = 4))
-library(gridExtra)
+
 grid.arrange(qplot(estimate, truth, data = (df %>% dplyr::filter(family == "a")), main="a"),
              qplot(estimate, truth, data = (df %>% dplyr::filter(family == "b")), main="b"),
              qplot(estimate, truth, data = (df %>% dplyr::filter(family == "tau")), main="tau"),
