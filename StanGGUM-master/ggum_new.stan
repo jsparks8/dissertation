@@ -6,7 +6,7 @@ data {
  }
 
 parameters {
-  vector[K-1]   tau_raw[n_item];
+  vector<lower=0>[K-1]   tau_raw[n_item];
 //  vector[K] tau[n_item];   // free step parameters parameter
   real b[n_item];          // item difficulty parameter
   real<lower=0, upper=4> a[n_item]; // item discrimination
@@ -31,11 +31,11 @@ transformed parameters{
 model {
   theta ~ normal(0, 1);
   b ~ normal(0, 2);  
-  a ~ normal(0, 0.5);
+  a ~ normal(0, 1.4);
   
-    tau_raw[,1] ~ lognormal(0, 5);
-    tau_raw[,2] ~ lognormal(0, 5);
-    tau_raw[,3] ~ lognormal(0, 5);
+    tau_raw[,1] ~ normal(0, 2);
+    tau_raw[,2] ~ normal(0, 2);
+    tau_raw[,3] ~ normal(0, 2);
 
 
   for (i in 1:n_sub){

@@ -41,9 +41,9 @@ initfun <- function(){
   )
 }
 
-chains <- 2
-iter <- 2000
-warmup <- 1000
+chains <- 3
+iter <- 15000
+warmup <- 10000
 
 #run 1 chain to diagnose whether the stan code works properly
 tic("Test (1 Chain, 50 Iterations)")
@@ -102,10 +102,6 @@ df <- estimates %>%
   dplyr::mutate(estimate = round(estimate, digits=4),
                 truth = round(truth, digits = 4))
 
-grid.arrange(qplot(estimate, truth, data = (df %>% dplyr::filter(family == "a")), main="a"),
-             qplot(estimate, truth, data = (df %>% dplyr::filter(family == "b")), main="b"),
-             qplot(estimate, truth, data = (df %>% dplyr::filter(family == "tau")), main="tau"),
-             qplot(estimate, truth, data = (df %>% dplyr::filter(family == "theta")), main="theta"))
 
 #save
 g <- arrangeGrob(qplot(estimate, truth, data = (df %>% dplyr::filter(family == "a")), main="a"),
@@ -119,6 +115,12 @@ ggsave(paste0(output_dir, "/", Sys.Date(), "_GGUM1_Plot_", chains,
 #save environment
 save.image(file=paste0(output_dir, "/", Sys.Date(), "_GGUM1_", chains, 
                        "chain_", iter, "_Environment.RData"))
+
+grid.arrange(qplot(estimate, truth, data = (df %>% dplyr::filter(family == "a")), main="a"),
+             qplot(estimate, truth, data = (df %>% dplyr::filter(family == "b")), main="b"),
+             qplot(estimate, truth, data = (df %>% dplyr::filter(family == "tau")), main="tau"),
+             qplot(estimate, truth, data = (df %>% dplyr::filter(family == "theta")), main="theta"))
+
 
 # #check model convergence using r package "shinystan"
 # library(shinystan)
