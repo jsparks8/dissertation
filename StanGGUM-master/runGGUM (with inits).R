@@ -16,7 +16,7 @@ options(mc.cores = parallel::detectCores())
 starting.directory = getwd()
 output_dir <- file.path(starting.directory, Sys.Date(), fsep="/")
 
-fileName <- file.path(starting.directory, "Jordan_GGUM_data.xlsx", fsep="/")
+fileName <- file.path(starting.directory, "2021-10-25_Jordan_GGUM_data.xlsx", fsep="/")
 stan_file <- file.path(starting.directory, "StanGGUM-master", "ggum_new.stan", fsep="/")
 
 #set up working directory 
