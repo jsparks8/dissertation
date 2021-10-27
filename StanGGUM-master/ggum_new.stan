@@ -6,13 +6,12 @@ data {
  }
 
 parameters {
-  vector<lower=0>[K-1]   tau_raw[n_item];
+  vector[K-1]   tau_raw[n_item];
 //  vector[K] tau[n_item];   // free step parameters parameter
   real b[n_item];          // item difficulty parameter
   real<lower=0, upper=4> a[n_item]; // item discrimination
   vector[n_sub] theta;     // latent trait
 }
-
 
 transformed parameters{
   
@@ -31,7 +30,7 @@ transformed parameters{
 model {
   theta ~ normal(0, 1);
   b ~ normal(0, 2);  
-  a ~ normal(0, 1.4);
+  a ~ normal(0, 0.75);
   
     tau_raw[,1] ~ normal(0, 2);
     tau_raw[,2] ~ normal(0, 2);
@@ -40,22 +39,22 @@ model {
 
   for (i in 1:n_sub){
      for (j in 1:n_item) {
-        //
+        
     vector[K] prob;
     
-    vector[K] nominator;
+    vector[K] numerator;
     
     for (k in 1:K) {
       
-      nominator[k]=exp(a[j]*((k-1)*(theta[i]-b[j])-sum(tau[j, 1:k])))+
+      numerator[k]=exp(a[j]*((k-1)*(theta[i]-b[j])-sum(tau[j, 1:k])))+
       exp(a[j]*(((2*K)-k)*(theta[i]-b[j])-sum(tau[j,1:k])));
       
     }
      
-    prob=nominator/sum(nominator);
+    prob=numerator/sum(numerator);
      
     r[i,j] ~ categorical(prob);
-    //
+    
      }
   }
   }

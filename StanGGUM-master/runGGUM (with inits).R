@@ -50,8 +50,8 @@ initfun <- function() {
 
 # Estimation specs -----
 chains <- 3
-iter <- 15000
-warmup <- 10000
+iter <- 2000
+warmup <- 1000
 
 # run 1 chain to diagnose whether the stan code works properly -----
 tic("Test (1 Chain, 50 Iterations)")
