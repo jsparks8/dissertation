@@ -33,12 +33,12 @@ model {
   real den[n_sub, n_item];
   
   theta ~ normal(1.2, 1);
-  b ~ normal(0.3, 1);  
-  a ~ normal(1.2, 0.5);
+  b ~ normal(0.3, 2);  
+  a ~ normal(0, 0.75);
   
-  tau_raw[,1] ~ normal(1, 1);
-  tau_raw[,2] ~ normal(1, 1);
-  tau_raw[,3] ~ normal(1, 1);
+  tau_raw[,1] ~ normal(1, 2);
+  tau_raw[,2] ~ normal(1, 2);
+  tau_raw[,3] ~ normal(1, 2);
   
   
   for (i in 1:n_sub){
