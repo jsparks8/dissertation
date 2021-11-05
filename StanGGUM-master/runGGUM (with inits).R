@@ -16,7 +16,8 @@ options(mc.cores = parallel::detectCores())
 
 # Specify working directory -----
 starting.directory <- getwd()
-output_dir <- file.path(starting.directory, Sys.Date(), fsep = "/")
+date <- Sys.Date()
+output_dir <- file.path(starting.directory, date, fsep = "/")
 
 # Create output directory if it does not exist ----
 if (!dir.exists(output_dir)) {
@@ -39,6 +40,7 @@ K <- 4 # number of categories
 GGUMdata <- list(n_sub = I, n_item = J, K = K, r = resp)
 
 # initial values  -----
+
 initfun <- function() {
   list(
     a = as.list(rep(0.5, 20)),
@@ -50,8 +52,8 @@ initfun <- function() {
 
 # Estimation specs -----
 chains <- 3
-iter <- 15000
-warmup <- 10000
+iter <- 30000
+warmup <- 25000
 
 
 # run 1 chain to diagnose whether the stan code works properly -----
@@ -69,7 +71,7 @@ log.txt <- tic.log(format = TRUE)
 
 # save stan file ----
 write.table(slot(get_stanmodel(GGUM), "model_code"),
-  file = paste0(output_dir, "/", Sys.Date(), "_ggum.stan"),
+  file = paste0(output_dir, "/", date, "_ggum.stan"),
   sep = "\t",
   quote = F, col.names = FALSE,
   row.names = FALSE
@@ -77,12 +79,12 @@ write.table(slot(get_stanmodel(GGUM), "model_code"),
 
 # save estimates ----
 write.csv(summary(GGUM1), paste0(
-  output_dir, "/", Sys.Date(), "_GGUM1_summary_", chains,
+  output_dir, "/", date, "_GGUM1_summary_", chains,
   "chain_", iter, "_bmggum.csv"
 ))
 
 saveRDS(GGUM1, paste0(
-  output_dir, "/", Sys.Date(), "_GGUM1_summary_", chains,
+  output_dir, "/", date, "_GGUM1_summary_", chains,
   "chain_", iter, "_bmggum.rds"
 ))
 
@@ -137,13 +139,13 @@ g <- arrangeGrob(
 )
 
 ggsave(paste0(
-  output_dir, "/", Sys.Date(), "_GGUM1_Plot_", chains,
+  output_dir, "/", date, "_GGUM1_Plot_", chains,
   "chain_", iter, "_bmggum.png"
 ), g)
 
 # save environment ----
 save.image(file = paste0(
-  output_dir, "/", Sys.Date(), "_GGUM1_", chains,
+  output_dir, "/", date, "_GGUM1_", chains,
   "chain_", iter, "_Environment.RData"
 ))
 
