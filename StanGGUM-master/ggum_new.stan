@@ -21,8 +21,8 @@ transformed parameters{
     tau[i,1]=0;
   }
   
-  for (d in 2:K){
-    tau[,d]=tau_raw[,(d-1)];
+  for (k in 2:K){
+    tau[,k]=tau_raw[,(k-1)];
   }
 }
 
@@ -36,14 +36,14 @@ model {
   b ~ normal(0.3, 1);  
   a ~ normal(1.2, 0.5);
   
-  tau_raw[,1] ~ normal(1, 1);
-  tau_raw[,2] ~ normal(1, 1);
-  tau_raw[,3] ~ normal(1, 1);
+  tau_raw[,1] ~ lognormal(0, 2);
+  tau_raw[,2] ~ lognormal(0, 2);
+  tau_raw[,3] ~ lognormal(0, 2);
   
   
-  for (i in 1:n_sub){
+  for (j in 1:n_sub){
     
-    for (j in 1:n_item) {
+    for (i in 1:n_item) {
       
       for (k in 1:K) {
         
@@ -52,10 +52,10 @@ model {
         
         numerator[i, j, k]=exp(
           (k-1)*
-          sqrt(pow(a[j],2)*pow((theta[i]-b[j]),2)) + a[j]*sum(tau[j, 1:k])
+          sqrt(pow(a[i],2)*pow((theta[j]-b[i]),2)) + a[i]*sum(tau[i, 1:k])
           ) + exp(
-            ((2*K)-k)*sqrt(pow(a[j],2)*pow((theta[i]-b[j]),2)) +
-            a[j]*sum(tau[j,1:k]));
+            ((2*K)-k)*sqrt(pow(a[i],2)*pow((theta[j]-b[i]),2)) +
+            a[i]*sum(tau[i,1:k]));
             
       }
       
@@ -70,4 +70,3 @@ model {
     }
   }
 }
-
