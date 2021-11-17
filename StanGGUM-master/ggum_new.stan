@@ -36,9 +36,9 @@ model {
   b ~ normal(0.3, 1);  
   a ~ normal(1.2, 0.5);
   
-  tau_raw[,1] ~ lognormal(0, 2);
-  tau_raw[,2] ~ lognormal(0, 2);
-  tau_raw[,3] ~ lognormal(0, 2);
+  tau_raw[,1] ~ normal(1, 1);
+  tau_raw[,2] ~ normal(1, 1);
+  tau_raw[,3] ~ normal(1, 1);
   
   
   for (j in 1:n_sub){
