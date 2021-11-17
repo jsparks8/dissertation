@@ -52,8 +52,8 @@ initfun <- function() {
 
 # Estimation specs -----
 chains <- 3
-iter <- 30000
-warmup <- 25000
+iter <- 20000
+warmup <- 15000
 
 
 # run 1 chain to diagnose whether the stan code works properly -----

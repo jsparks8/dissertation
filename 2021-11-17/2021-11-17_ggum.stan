@@ -50,7 +50,7 @@ model {
         // numerator[k]=exp(a[j]*((k-1)*(theta[i]-b[j])-sum(tau[j, 1:k])))+
         // exp(a[j]*(((2*K)-k)*(theta[i]-b[j])-sum(tau[j,1:k])));
         
-        numerator[j, i, k]=exp(
+        numerator[i, j, k]=exp(
           (k-1)*
           sqrt(pow(a[i],2)*pow((theta[j]-b[i]),2)) + a[i]*sum(tau[i, 1:k])
           ) + exp(
@@ -59,13 +59,13 @@ model {
             
       }
       
-      den[j, i] = sum(numerator[j, i, 1:K]);
+      den[i, j] = sum(numerator[i, j, 1:K]);
       
       for (k in 1:K) {
-        prob[j, i, k]=numerator[j, i, k]/den[j, i];
+        prob[i,j,k]=numerator[i,j,k]/den[i, j];
       }
       
-      r[j, i] ~ categorical(prob[j, i, ]);
+      r[i,j] ~ categorical(prob[i,j,]);
       
     }
   }
