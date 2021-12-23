@@ -6,7 +6,7 @@ model
                                                                                                            
 for (j in 1:J) {		                                                                                                      
    b[j,1] ~ dnorm(0, .25);                                                                                            
-   a[j,1] ~ dnorm(0, .5)  I(.0,4.0);                                                                                       
+   a[j,1] ~ dnorm(0, .5);T(0,4);                                                                                       
                                                       
 
 }                                                                                                                       
