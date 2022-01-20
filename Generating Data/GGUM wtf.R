@@ -35,7 +35,7 @@ num_cats <- 6 # c(2, 6)
 reps_cell <- 10
 
 # Make sure values are reproducible
-set.seed(1)
+set.seed(2)
 
 # Generating thetas- randomly sampled from a normal distribution
 thetas <- rnorm(num_people, mean = 0, sd = 1)
@@ -74,33 +74,30 @@ for (i in 1:length(thetas)) {
     a <- item_sample$alpha[j]
     b <- item_sample$delta[j]
 
-    num0 <- (exp(1)^(a * (0 * (theta - b) + (thresholds[j, 1])))) +
-      (exp(1)^(a * (11 * (theta - b) + (thresholds[j, 1] + thresholds[j, 2] + thresholds[j, 3] + thresholds[j, 4]
-        + thresholds[j, 5] + thresholds[j, 6] + thresholds[j, 7] + thresholds[j, 8] 
-        + thresholds[j, 9] + thresholds[j, 10] + thresholds[j, 11] + thresholds[j, 12]))))
-
-    num1 <- (exp(1)^(a * (1 * (theta - b) + (thresholds[j, 1] + thresholds[j, 2])))) +
-      (exp(1)^(a * (10 * (theta - b) + (thresholds[j, 1] + thresholds[j, 2] + thresholds[j, 3] + thresholds[j, 4]
-        + thresholds[j, 5] + thresholds[j, 6] + thresholds[j, 7] + thresholds[j, 8] 
-        + thresholds[j, 9] + thresholds[j, 10] + thresholds[j, 11]))))
-
-    num2 <- (exp(1)^(a * (2 * (theta - b) + (thresholds[j, 1] + thresholds[j, 2] + thresholds[j, 3])))) +
-      (exp(1)^(a * (9 * (theta - b) + (thresholds[j, 1] + thresholds[j, 2] + thresholds[j, 3] + thresholds[j, 4]
-        + thresholds[j, 5] + thresholds[j, 6] + thresholds[j, 7] + thresholds[j, 8] 
-        + thresholds[j, 9] + thresholds[j, 10]))))
-
-    num3 <- (exp(1)^(a * (3 * (theta - b) + (thresholds[j, 1] + thresholds[j, 2] + thresholds[j, 3] + thresholds[j, 4])))) +
-      (exp(1)^(a * (8 * (theta - b) + (thresholds[j, 1] + thresholds[j, 2] + thresholds[j, 3] + thresholds[j, 4]
-        + thresholds[j, 5] + thresholds[j, 6] + thresholds[j, 7] + thresholds[j, 8] 
-        + thresholds[j, 9]))))
+    tausum_0 <- thresholds[j, 1]
+    tausum_1 <- thresholds[j, 1] + thresholds[j, 2]
+    tausum_2 <- thresholds[j, 1] + thresholds[j, 2] + thresholds[j, 3]
+    tausum_3 <- thresholds[j, 1] + thresholds[j, 2] + thresholds[j, 3] + thresholds[j, 4]
+    tausum_4 <- thresholds[j, 1] + thresholds[j, 2] + thresholds[j, 3] + thresholds[j, 4] + thresholds[j, 5]
+    tausum_5 <- thresholds[j, 1] + thresholds[j, 2] + thresholds[j, 3] + thresholds[j, 4] + thresholds[j, 5] + thresholds[j, 6]
     
-    num4 <- (exp(1)^(a * (4 * (theta - b) + (thresholds[j, 1] + thresholds[j, 2] + thresholds[j, 3] + thresholds[j, 4]+ thresholds[j, 5])))) +
-      (exp(1)^(a * (7 * (theta - b) + (thresholds[j, 1] + thresholds[j, 2] + thresholds[j, 3] + thresholds[j, 4]
-                                       + thresholds[j, 5] + thresholds[j, 6] + thresholds[j, 7] + thresholds[j, 8]))))
+    num0 <- (exp(1)^(a * (0 * (theta - b) + tausum_0))) +
+      (exp(1)^(a * (11 * (theta - b) + tausum_0)))
+
+    num1 <- (exp(1)^(a * (1 * (theta - b) + tausum_1))) +
+      (exp(1)^(a * (10 * (theta - b) + tausum_1)))
+
+    num2 <- (exp(1)^(a * (2 * (theta - b) + tausum_2))) +
+      (exp(1)^(a * (9 * (theta - b) + tausum_2)))
+
+    num3 <- (exp(1)^(a * (3 * (theta - b) + tausum_3))) +
+      (exp(1)^(a * (8 * (theta - b) + tausum_3)))
     
-    num5 <- (exp(1)^(a * (5 * (theta - b) + (thresholds[j, 1] + thresholds[j, 2] + thresholds[j, 3] + thresholds[j, 4] + thresholds[j, 5] + thresholds[j, 6])))) +
-      (exp(1)^(a * (6 * (theta - b) + (thresholds[j, 1] + thresholds[j, 2] + thresholds[j, 3] + thresholds[j, 4]
-                                       + thresholds[j, 5] + thresholds[j, 6] + thresholds[j, 7]))))
+    num4 <- (exp(1)^(a * (4 * (theta - b) + tausum_4))) +
+      (exp(1)^(a * (7 * (theta - b) + tausum_4)))
+    
+    num5 <- (exp(1)^(a * (5 * (theta - b) + tausum_5))) +
+      (exp(1)^(a * (6 * (theta - b) + tausum_5)))
 
     denom <- num0 + num1 + num2 + num3 + num4 + num5
     p0 <- num0 / denom # probabilities
@@ -164,7 +161,7 @@ start_alpha <- rep(1, num_items)
 #  τ ̃_ik=O_i+∆_i (C_i-k_i )	
 
 start_tau0 <- data.frame()
-for (k in 1:(2*(num_cats-1)+1)){
+for (k in 1:num_cats-1){
 for (j in 1:length(item_sample)) {
 O_i <- 1.002+ 0.449*abs(start_delta[j]) - 0.093*num_cats
 DELTA_i <- 0.921 + 0.058*abs(start_delta[j]) - 0.129*num_cats
@@ -202,29 +199,31 @@ tau_priors <- start_tau0 %>%
 
 # Format data to use in stan
 stan_rsp <- responses %>%
-  dplyr::select(theta, item, rsp, rt) %>%
+  dplyr::select(id, item, rsp, rt) %>%
   dplyr::mutate(rsp = rsp + 1)%>%
   tidyr::pivot_wider(values_from=c(rsp, rt), names_from=item) %>%
   dplyr::select(starts_with("rsp"))  %>%
   mutate(across(everything(), as.numeric))
 
-stan_b <- locations
+stan_b <- item_sample$delta[j]
+stan_a <- item_sample$alpha[j]
 
 stan_theta <- thetas
 
-stan_tau <- thresholds[,1:4]
+stan_tau <- thresholds[,1:num_cats]
 
 wb <- openxlsx::createWorkbook()
 openxlsx::addWorksheet(wb, "resp")
 openxlsx::addWorksheet(wb, "b")
+openxlsx::addWorksheet(wb, "a")
 openxlsx::addWorksheet(wb, "tau")
 openxlsx::addWorksheet(wb, "theta")
 
 openxlsx::writeData(wb, "resp", stan_rsp, colNames=FALSE, rowNames=FALSE)
 openxlsx::writeData(wb, "b", stan_b, colNames=FALSE, rowNames=FALSE)
+openxlsx::writeData(wb, "a", stan_a, colNames=FALSE, rowNames=FALSE)
 openxlsx::writeData(wb, "tau", stan_tau, colNames=FALSE, rowNames=FALSE)
 openxlsx::writeData(wb, "theta", stan_theta, colNames=FALSE, rowNames=FALSE)
 
-openxlsx::saveWorkbook(wb, file = "Jordan_GGUM_data.xlsx", overwrite=FALSE)
-
+openxlsx::saveWorkbook(wb, file = paste(Sys.Date(), "GGUM data.xlsx"), overwrite=FALSE)
 
