@@ -52,3 +52,144 @@ vignettes/*.pdf
 0 REFERENCE - Elizabeth/SAS Programs/3dSIMPLE_4cat RUN.sas
 0 REFERENCE - Elizabeth/SAS Programs/3dSIMPLE_4cat RUN15.sas
 bmggum testing.R
+IGNORE/0 REFERENCE - Elizabeth/SAS Programs/3dMIX2_6cat RUN4.sas
+IGNORE/0 REFERENCE - Elizabeth/SAS Programs/3dMIX2_6cat RUN_2.sas
+IGNORE/0 REFERENCE - Elizabeth/SAS Programs/3dSIMPLE_4cat RUN.sas
+IGNORE/0 REFERENCE - Elizabeth/SAS Programs/3dSIMPLE_4cat RUN15.sas
+IGNORE/2021-10-25_Jordan_GGUM_data.xlsx
+IGNORE/2022-01-20 GGUM data.xlsx
+IGNORE/2022-01-22 - 1 chain/2022-01-22_GGUM1_JAGS_Trace.pdf
+IGNORE/2022-01-22 - 1 chain/2022-01-22_GGUM1_Plot_JAGS.png
+IGNORE/2022-01-22 GGUM data-2.xlsx
+IGNORE/2022-01-22 GGUM data.xlsx
+IGNORE/2022-01-22/2022-01-22_GGUM1_JAGS_autocorrelation.pdf
+IGNORE/2022-01-22/2022-01-22_GGUM1_JAGS_gelman.txt
+IGNORE/2022-01-22/2022-01-22_GGUM1_JAGS_Trace.pdf
+IGNORE/2022-01-22/2022-01-22_GGUM1_Plot_JAGS.png
+IGNORE/CELL1_CAT6_I10_N500_REP1 for tests/CELL1_CAT6_I10_N500_REP1_autocorrelation_plot.pdf
+IGNORE/CELL1_CAT6_I10_N500_REP1 for tests/CELL1_CAT6_I10_N500_REP1_comparison_plot.png
+IGNORE/CELL1_CAT6_I10_N500_REP1 for tests/CELL1_CAT6_I10_N500_REP1_DATA.R
+IGNORE/CELL1_CAT6_I10_N500_REP1 for tests/CELL1_CAT6_I10_N500_REP1_DATASET.xlsx
+IGNORE/CELL1_CAT6_I10_N500_REP1 for tests/CELL1_CAT6_I10_N500_REP1_gelman.txt
+IGNORE/CELL1_CAT6_I10_N500_REP1 for tests/CELL1_CAT6_I10_N500_REP1_MODEL.R
+IGNORE/CELL1_CAT6_I10_N500_REP1 for tests/CELL1_CAT6_I10_N500_REP1_MODEL2.R
+IGNORE/CELL1_CAT6_I10_N500_REP1 for tests/CELL1_CAT6_I10_N500_REP1_tictoc.txt
+IGNORE/CELL1_CAT6_I10_N500_REP1 for tests/CELL1_CAT6_I10_N500_REP1_trace_plot.pdf
+IGNORE/CELL9_CAT2_I30_N2000_REP10_DATA.R
+IGNORE/debugging rjags.R
+IGNORE/StanGGUM-master/bmggum code.stan
+IGNORE/StanGGUM-master/Emily's Code/Emily_ggum.stan
+IGNORE/StanGGUM-master/Emily's Code/Emily_GGUMdata.xlsx
+IGNORE/StanGGUM-master/generate_ggum_package_data.R
+IGNORE/StanGGUM-master/ggum.stan
+IGNORE/StanGGUM-master/ggum_new.stan
+IGNORE/StanGGUM-master/JAGS testing/data.R
+IGNORE/StanGGUM-master/JAGS testing/Model Script.R
+IGNORE/StanGGUM-master/JAGS testing/run jags.R
+IGNORE/StanGGUM-master/OpenBUGS/20211015 stan v bugs.xlsx
+IGNORE/StanGGUM-master/OpenBUGS/Openbugs stats 10k plus 5.txt
+IGNORE/StanGGUM-master/OpenBUGS/Openbugs stats.txt
+IGNORE/StanGGUM-master/OpenBUGS/Unidimensiona GGUM Reference.TXT
+IGNORE/StanGGUM-master/OpenBUGS/Unidimensional GGUM With OpenBUGS Jordan_GGUM_Data.txt
+IGNORE/StanGGUM-master/OpenBUGS/Unidimensional GGUM With OpenBUGS Jordan_GGUM_Data2.txt
+IGNORE/StanGGUM-master/OpenBUGS/Unidimensional GGUM With OpenBUGS.txt
+IGNORE/StanGGUM-master/runGGUM (with inits) bmggum.R
+IGNORE/StanGGUM-master/runGGUM (with inits).R
+IGNORE/StanGGUM-master/use bmggum.R
+IGNORE/test_files.R
+IGNORE/truevalueestimates.xlsx
+IGNORE/0 REFERENCE - Elizabeth/SAS Programs/3dMIX2_6cat RUN3.sas
+IGNORE/0 REFERENCE - Elizabeth/SAS Programs/3dMIX2_6cat RUN.sas
+IGNORE/0 REFERENCE - Elizabeth/MMAPest/MMAPint5.dat
+IGNORE/0 REFERENCE - Elizabeth/MMAPest/MMAPint4.dat
+IGNORE/0 REFERENCE - Elizabeth/MMAPest/MMAPint3.dat
+IGNORE/0 REFERENCE - Elizabeth/MMAPest/MMAPint2.dat
+IGNORE/0 REFERENCE - Elizabeth/MMAPest/MMAPint1.dat
+IGNORE/0 Graveyard/personparameters.xlsx
+IGNORE/0 Graveyard/Mac Stan Testing/runGGUM (with inits).R
+IGNORE/0 Graveyard/Mac Stan Testing/Jordan_GGUM_data.xlsx
+IGNORE/0 Graveyard/Mac Stan Testing/ggum.stan
+IGNORE/0 Graveyard/Mac Stan Testing/bmggum.stan
+IGNORE/0 Graveyard/itemparameters.xlsx
+IGNORE/0 Graveyard/2022-01-09/2022-01-09_GGUM1_Plot_JAGS.png
+IGNORE/0 Graveyard/2022-01-08/2022-01-08_GGUM1_Plot_JAGS.png
+IGNORE/0 Graveyard/2021-12-24/2021-12-24_GGUM1_Plot_JAGS.png
+IGNORE/0 Graveyard/2021-12-07/Parameter Recovery Rplot.png
+IGNORE/0 Graveyard/2021-12-07/2021-12-07_ggum.stan
+IGNORE/0 Graveyard/2021-11-21/2021-11-21_GGUM1_summary_3chain_30000_bmggum.csv
+IGNORE/0 Graveyard/2021-11-21/2021-11-21_GGUM1_Plot_3chain_30000_bmggum.png
+IGNORE/0 Graveyard/2021-11-21/2021-11-21_ggum.stan
+IGNORE/0 Graveyard/2021-11-20/2021-11-20_GGUM1_summary_3chain_5000_bmggum.csv
+IGNORE/0 Graveyard/2021-11-20/2021-11-20_GGUM1_summary_3chain_25000_bmggum.csv
+IGNORE/0 Graveyard/2021-11-20/2021-11-20_GGUM1_Plot_3chain_5000_bmggum.png
+IGNORE/0 Graveyard/2021-11-20/2021-11-20_GGUM1_Plot_3chain_25000_bmggum.png
+IGNORE/0 Graveyard/2021-11-20/2021-11-20_ggum.stan
+IGNORE/0 Graveyard/2021-11-19/2021-11-19_GGUM1_summary_3chain_25000_bmggum.csv
+IGNORE/0 Graveyard/2021-11-19/2021-11-19_GGUM1_Plot_3chain_25000_bmggum.png
+IGNORE/0 Graveyard/2021-11-19/2021-11-19_ggum.stan
+IGNORE/0 Graveyard/2021-11-17/2021-11-17_GGUM1_summary_3chain_25000_bmggum.csv
+IGNORE/0 Graveyard/2021-11-17/2021-11-17_GGUM1_summary_3chain_20000_bmggum.csv
+IGNORE/0 Graveyard/2021-11-17/2021-11-17_GGUM1_Plot_3chain_25000_bmggum.png
+IGNORE/0 Graveyard/2021-11-17/2021-11-17_GGUM1_Plot_3chain_20000_bmggum.png
+IGNORE/0 Graveyard/2021-11-17/2021-11-17_ggum.stan
+IGNORE/0 Graveyard/2021-11-12/2021-11-12_GGUM1_summary_3chain_30000_bmggum.csv
+IGNORE/0 Graveyard/2021-11-12/2021-11-12_GGUM1_Plot_3chain_30000_bmggum.png
+IGNORE/0 Graveyard/2021-11-12/2021-11-12_ggum.stan
+IGNORE/0 Graveyard/2021-11-11/2021-11-11_GGUM1_summary_3chain_30000_bmggum.csv
+IGNORE/0 Graveyard/2021-11-11/2021-11-11_GGUM1_Plot_3chain_30000_bmggum.png
+IGNORE/0 Graveyard/2021-11-11/2021-11-11_ggum.stan
+IGNORE/0 Graveyard/2021-11-03/2021-11-03_GGUM1_summary_3chain_30000_bmggum.csv
+IGNORE/0 Graveyard/2021-11-03/2021-11-03_GGUM1_Plot_3chain_30000_bmggum.png
+IGNORE/0 Graveyard/2021-11-03/2021-11-03_ggum.stan
+IGNORE/0 Graveyard/2021-11-02/2021-11-02_GGUM1_summary_3chain_1000_bmggum.csv
+IGNORE/0 Graveyard/2021-11-02/2021-11-02_GGUM1_Plot_3chain_1000_bmggum.png
+IGNORE/0 Graveyard/2021-11-02/2021-11-02_ggum.stan
+IGNORE/0 Graveyard/2021-11-01/2021-11-02_GGUM1_summary_3chain_25000_bmggum.csv
+IGNORE/0 Graveyard/2021-11-01/2021-11-02_GGUM1_Plot_3chain_25000_bmggum.png
+IGNORE/0 Graveyard/2021-11-01/2021-11-02_ggum.stan
+IGNORE/0 Graveyard/2021-10-31/2021-10-31_GGUM1_summary_3chain_15000_bmggum.csv
+IGNORE/0 Graveyard/2021-10-31/2021-10-31_GGUM1_Plot_3chain_15000_bmggum.png
+IGNORE/0 Graveyard/2021-10-31/2021-10-31_ggum.stan
+IGNORE/0 Graveyard/2021-10-30/2021-10-31_GGUM1_summary_3chain_2000_bmggum.csv
+IGNORE/0 Graveyard/2021-10-30/2021-10-31_GGUM1_Plot_3chain_2000_bmggum.png
+IGNORE/0 Graveyard/2021-10-30/2021-10-31_ggum.stan
+IGNORE/0 Graveyard/2021-10-29/2021-10-30_GGUM1_summary_3chain_15000_bmggum.csv
+IGNORE/0 Graveyard/2021-10-29/2021-10-30_GGUM1_Plot_3chain_15000_bmggum.png
+IGNORE/0 Graveyard/2021-10-29/2021-10-30_ggum.stan
+IGNORE/0 Graveyard/2021-10-29/2021-10-29_GGUM1_summary_3chain_2000_bmggum.csv
+IGNORE/0 Graveyard/2021-10-29/2021-10-29_GGUM1_Plot_3chain_2000_bmggum.png
+IGNORE/0 Graveyard/2021-10-29/2021-10-29_ggum.stan
+IGNORE/0 Graveyard/2021-10-28/2021-10-28_GGUM1_summary_3chain_2000_bmggum.csv
+IGNORE/0 Graveyard/2021-10-28/2021-10-28_GGUM1_Plot_3chain_2000_bmggum.png
+IGNORE/0 Graveyard/2021-10-28/2021-10-28_ggum.stan
+IGNORE/0 Graveyard/2021-10-27/2021-10-28_GGUM1_summary_3chain_15000_bmggum.csv
+IGNORE/0 Graveyard/2021-10-27/2021-10-28_GGUM1_Plot_3chain_15000_bmggum.png
+IGNORE/0 Graveyard/2021-10-27/2021-10-28_ggum.stan
+IGNORE/0 Graveyard/2021-10-27/2021-10-27_GGUM1_summary_3chain_2000_bmggum.csv
+IGNORE/0 Graveyard/2021-10-27/2021-10-27_GGUM1_Plot_3chain_2000_bmggum.png
+IGNORE/0 Graveyard/2021-10-27/2021-10-27_ggum.stan
+IGNORE/0 Graveyard/2021-10-26/2021-10-26_ggum_new.stan
+IGNORE/0 Graveyard/2021-10-26/2021-10-26_GGUM1_summary_3chain_2000_bmggum.csv
+IGNORE/0 Graveyard/2021-10-26/2021-10-26_GGUM1_summary_3chain_15000_bmggum.csv
+IGNORE/0 Graveyard/2021-10-26/2021-10-26_GGUM1_Plot_3chain_2000_bmggum.png
+IGNORE/0 Graveyard/2021-10-26/2021-10-26_GGUM1_Plot_3chain_15000_bmggum.png
+IGNORE/0 Graveyard/2021-10-25/2021-10-25_GGUM1_summary_2chain_2000_bmggum.csv
+IGNORE/0 Graveyard/2021-10-25/2021-10-25_GGUM1_Plot_2chain_2000_bmggum.png
+IGNORE/0 Graveyard/2021-10-22/ggum_new.stan
+IGNORE/0 Graveyard/2021-10-22/2021-10-22_GGUM1_summary_3chain_15000_bmggum.csv
+IGNORE/0 Graveyard/2021-10-22/2021-10-22_GGUM1_Plot_3chain_15000_bmggum.png
+IGNORE/0 Graveyard/2021-10-21/2021-10-21_GGUM1_summary_3chain_2000_bmggum.csv
+IGNORE/0 Graveyard/2021-10-21/2021-10-21_GGUM1_summary_3chain_15000_bmggum.csv
+IGNORE/0 Graveyard/2021-10-21/2021-10-21_GGUM1_Plot_3chain_2000_bmggum.png
+IGNORE/0 Graveyard/2021-10-21/2021-10-21_GGUM1_Plot_3chain_15000_bmggum.png
+IGNORE/0 Graveyard/2021-10-20/2021-10-20_GGUM1_summary_3chain_15000_bmggum.csv
+IGNORE/0 Graveyard/2021-10-20/2021-10-20_GGUM1_Plot_3chain_15000_bmggum.png
+IGNORE/0 Graveyard/2021-10-19/2021-10-19_GGUM1_summary_3chain_15000_bmggum.csv
+IGNORE/0 Graveyard/2021-10-18/GGUM1_summary_3chain_10kwarmup_5k_2.csv
+IGNORE/0 Graveyard/2021-10-17/GGUM1_summary_3chain_10kwarmup_5k.xlsx
+IGNORE/0 Graveyard/2021-10-17/GGUM1_summary_3chain_10kwarmup_5k.csv
+IGNORE/0 Graveyard/2021-10-16/GGUM1_summary_2k.csv
+IGNORE/0 Graveyard/2021-10-15_Jordan_GGUM_data.xlsx
+IGNORE/0 Graveyard/2021-10-15/GGUM1_summary.csv
+IGNORE/0 Graveyard/2021-10-13/ggumcmd-2.txt
+IGNORE/0 Graveyard/2021-10-13/ggumcmd-101321
