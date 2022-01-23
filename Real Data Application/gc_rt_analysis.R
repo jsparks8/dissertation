@@ -6,12 +6,12 @@ library(readxl)
 library(psych)
 
 ## load data prepped in data_prep.R #----
-data <- readRDS("data.rds")
-questions <- readRDS("questions.rds")
+data <- readRDS("Real Data Application/data.rds")
+questions <- readRDS("Real Data Application/questions.rds")
 
 # Loading estimates
-items <- readxl::read_excel(path = "itemparameters.xlsx")
-people <- readxl::read_excel(path = "personparameters.xlsx")
+items <- readxl::read_excel(path = "0 Graveyard/itemparameters.xlsx")
+people <- readxl::read_excel(path = "0 Graveyard/personparameters.xlsx")
 
 # one:
 # Calculate average RT for all responses of 1, 2, 3... 6
@@ -42,12 +42,24 @@ data.long <- cbind(
     ) %>%
     tidyr::gather(QuestionRT, RT, RTG1:RTG63) %>%
     dplyr::select(-QuestionRT)) %>%
-    dplyr::mutate(RT_log = log(RT))
+    dplyr::mutate(RT_log = log(RT),
+                  RT2 = exp(RT_log))
 )
+test <- psych::describeBy(data.long$RT_log, group=data.long$Response, mat=TRUE) %>% dplyr::select(item, mean,sd)
+test
+psych::describe(data.long$RT_log)
+RT.averages2<-psych::describeBy(data.long$RT, group = data.long$Response, mat = TRUE) %>% dplyr::select(item, mean,sd)
+RT.averages2
+RT.averages2b<-psych::describeBy(responses$rt, group = responses$rsp, mat = TRUE) %>% dplyr::select(item, mean,sd)
+RT.averages2b
 
-RT.averages <- psych::describeBy(data.long$RT, group = data.long$Response, mat = TRUE)
+#summary(lm(test$item ~ poly(test$mean,2)))
 
-ggplot(data = RT.averages, aes(x = item, y = mean, group = 1)) +
+ggplot(data = RT.averages2b, aes(x = item, y = mean, group = 1)) +
+  geom_line() +
+  geom_point()
+
+ggplot(data = RT.averages2, aes(x = item, y = mean, group = 1)) +
   geom_line() +
   geom_point()
 
@@ -195,12 +207,12 @@ TukeyHSD(m2)
 
 # Two: Plot theta - delta against log10(RT)
 
-clusters2 <- clusters
-clusters2$Dist_mean_sqd <- (clusters2$Dist_mean)^2
+clusters2 <- distance.RT
+clusters2$Dist_mean_sqd <- (clusters2$Dist)^2
 clusters3 <- clusters2 %>%
-  dplyr::filter(Dist_mean_sqd <= 7.5)
+  dplyr::filter(RT < 18000)
 
-ggplot(data = clusters3, aes(x = Dist_mean_sqd, y = RT_mean)) +
+ggplot(data = clusters3, aes(x = Dist_mean_sqd, y = RT)) +
   geom_line()+
   geom_point()+
   geom_smooth(method = "loess", se = FALSE) +
