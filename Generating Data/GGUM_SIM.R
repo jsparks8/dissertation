@@ -78,6 +78,8 @@ for (item_iterate in 1:length(num_items_sim)){
           dplyr::relocate(var_real, var_sim) %>% 
           rename_with(~str_remove(., paste0("_", num_cats)))
         
+        # Need to do this twice for 6 cats and 2 cats (could code this better later)
+        if (num_cats == 6){
         thresholds <- item_sample %>% dplyr::select(starts_with("tau")) %>%
           dplyr::mutate(
             tau6=0,
@@ -94,7 +96,7 @@ for (item_iterate in 1:length(num_items_sim)){
         # Using item and person parameters to generate responses
         for (i in 1:length(thetas)) {
           theta <- thetas[i]
-          for (j in 1:length(item_sample)) {
+          for (j in 1:nrow(item_sample)) {
             a <- item_sample$alpha[j]
             b <- item_sample$delta[j]
             
@@ -160,16 +162,65 @@ for (item_iterate in 1:length(num_items_sim)){
             responses <- bind_rows(responses, prob)
           }
         }
+        }
         
-        print(hist(responses$rsp, 
-                   main=paste0("CELL", cell, "_CAT", num_cats_sim[cats_iterate], "_I", 
-                                              num_items_sim[item_iterate], "_N", num_people_sim[people_iterate],
-                                              "_REP", reps_cell_sim[rep_iterate])))
-        
-        
-        
-        #---- Now obtain starting values ----
-        
+        else if (num_cats == 2){
+          thresholds <- item_sample %>% dplyr::select(starts_with("tau")) %>%
+            dplyr::mutate(
+              tau2=0,
+              tau3=-1*tau1
+            ) %>%
+            as.matrix()%>%
+            unname()
+          
+          responses <- data.frame()
+          # Using item and person parameters to generate responses
+          for (i in 1:length(thetas)) {
+            theta <- thetas[i]
+            for (j in 1:nrow(item_sample)) {
+              a <- item_sample$alpha[j]
+              b <- item_sample$delta[j]
+              
+              tausum_0 <- thresholds[j, 1]
+              tausum_1 <- thresholds[j, 1] + thresholds[j, 2]
+              
+              num0 <- (exp(1)^(a * (0 * (theta - b) + tausum_0))) +
+                (exp(1)^(a * (3 * (theta - b) + tausum_0)))
+              
+              num1 <- (exp(1)^(a * (1 * (theta - b) + tausum_1))) +
+                (exp(1)^(a * (2 * (theta - b) + tausum_1)))
+              
+              denom <- num0 + num1
+              p0 <- num0 / denom # probabilities
+              p1 <- num1 / denom
+              
+              set.seed(1 * i * j)
+              raw <- runif(1)
+              rsp <- (raw > p0) + 
+                (raw > (p0 + p1))
+              
+              # Generating response times
+              b0 <- 4500
+              b1 <- 350
+              b2 <- -14
+              
+              Dist <- theta-b
+              Dist_sqd <- (theta-b)^2
+              
+              rt <- (b0 + 
+                       b1*Dist_sqd + 
+                       b2*(Dist_sqd^2)) + rnorm(1, mean=0, sd=2800)
+              
+              rt <- ifelse(rt < 200, 200, rt)
+              
+              
+              prob <- data.frame(id = i, item = j, p0, p1, raw, rsp, rt)
+              
+              responses <- bind_rows(responses, prob)
+            }
+          }
+        }
+
         # Starting Values ---
         # Starting values for item locations and thetas will be obtained by DCA
         # and retaining first dimension
@@ -193,7 +244,7 @@ for (item_iterate in 1:length(num_items_sim)){
         
         start_tau0 <- data.frame()
         for (k in 1:num_cats-1){
-          for (j in 1:length(item_sample)) {
+          for (j in 1:nrow(item_sample)) {
             O_i <- 1.002+ 0.449*abs(start_delta[j]) - 0.093*num_cats
             DELTA_i <- 0.921 + 0.058*abs(start_delta[j]) - 0.129*num_cats
             k_i = k
@@ -239,6 +290,3 @@ for (item_iterate in 1:length(num_items_sim)){
 }
   }
 }
-
-
-#table(responses$rsp)
