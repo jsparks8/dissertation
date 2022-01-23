@@ -205,25 +205,48 @@ stan_rsp <- responses %>%
   dplyr::select(starts_with("rsp"))  %>%
   mutate(across(everything(), as.numeric))
 
-stan_b <- item_sample$delta[j]
-stan_a <- item_sample$alpha[j]
+stan_b <- item_sample$delta
+stan_a <- item_sample$alpha
 
 stan_theta <- thetas
 
 stan_tau <- thresholds[,1:num_cats]
 
+#tau[ 1,2] ~ dlnorm( 1.098,1);
+jags_tau_priors <- tau_priors %>%
+  dplyr::mutate(item = row_number(),
+                tau_0 = NA) %>%
+  tidyr::pivot_longer(!item, names_to = "index", values_to = "prior") %>%
+  dplyr::mutate(index = as.numeric(str_remove(index, "tau_"))+1,
+                save = paste0("tau[", item, ",", index, "] ~ dlnorm(", prior,
+                              ", 1);")
+  )%>%
+  drop_na()%>%
+  pull(save)
+  
 wb <- openxlsx::createWorkbook()
 openxlsx::addWorksheet(wb, "resp")
-openxlsx::addWorksheet(wb, "b")
-openxlsx::addWorksheet(wb, "a")
-openxlsx::addWorksheet(wb, "tau")
-openxlsx::addWorksheet(wb, "theta")
+openxlsx::addWorksheet(wb, "b true")
+openxlsx::addWorksheet(wb, "a true")
+openxlsx::addWorksheet(wb, "tau true")
+openxlsx::addWorksheet(wb, "theta true")
+openxlsx::addWorksheet(wb, "b start")
+openxlsx::addWorksheet(wb, "a start")
+openxlsx::addWorksheet(wb, "tau start")
+openxlsx::addWorksheet(wb, "theta start")
+openxlsx::addWorksheet(wb, "tau priors")
 
 openxlsx::writeData(wb, "resp", stan_rsp, colNames=FALSE, rowNames=FALSE)
-openxlsx::writeData(wb, "b", stan_b, colNames=FALSE, rowNames=FALSE)
-openxlsx::writeData(wb, "a", stan_a, colNames=FALSE, rowNames=FALSE)
-openxlsx::writeData(wb, "tau", stan_tau, colNames=FALSE, rowNames=FALSE)
-openxlsx::writeData(wb, "theta", stan_theta, colNames=FALSE, rowNames=FALSE)
+openxlsx::writeData(wb, "b true", stan_b, colNames=FALSE, rowNames=FALSE)
+openxlsx::writeData(wb, "a true", stan_a, colNames=FALSE, rowNames=FALSE)
+openxlsx::writeData(wb, "tau true", stan_tau, colNames=FALSE, rowNames=FALSE)
+openxlsx::writeData(wb, "theta true", stan_theta, colNames=FALSE, rowNames=FALSE)
+
+openxlsx::writeData(wb, "b start", start_delta, colNames=FALSE, rowNames=FALSE)
+openxlsx::writeData(wb, "a start", start_alpha, colNames=FALSE, rowNames=FALSE)
+openxlsx::writeData(wb, "tau start", start_tau, colNames=FALSE, rowNames=FALSE)
+openxlsx::writeData(wb, "theta start", start_theta, colNames=FALSE, rowNames=FALSE)
+
+openxlsx::writeData(wb, "tau priors", jags_tau_priors, colNames=FALSE, rowNames=FALSE)
 
 openxlsx::saveWorkbook(wb, file = paste(Sys.Date(), "GGUM data.xlsx"), overwrite=FALSE)
-
