@@ -11,7 +11,7 @@ CELL = 1
 REP = 1
 
 # Packages required -----
-packages <- c("tidyverse", "ggplot2", "openxlsx", "rjags", "coda", "tictoc", "gridExtra",
+packages <- c("tidyverse", "ggplot2", "openxlsx", "rjags", "coda", "tictoc", "gridExtra", "R2jags",
               "openxlsx", "stringr")
 
 # Install packages not yet installed -----
