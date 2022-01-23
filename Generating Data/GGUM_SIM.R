@@ -37,10 +37,10 @@ reps_cell_sim <- c(1:10)
 cell <- 1
 # Loop starts here # 
 
-for (people_iterate in 1:length(num_people)){
-  for (cats_iterate in 1:length(num_cats)){
-for (item_iterate in 1:length(num_items)){
-      for (rep_iterate in 1:length(reps_cell)){
+for (people_iterate in 1:length(num_people_sim)){
+  for (cats_iterate in 1:length(num_cats_sim)){
+for (item_iterate in 1:length(num_items_sim)){
+      for (rep_iterate in 1:length(reps_cell_sim)){
         print(paste0("CELL", cell, "_CAT", num_cats_sim[cats_iterate], "_I", 
                num_items_sim[item_iterate], "_N", num_people_sim[people_iterate],
                "_REP", reps_cell_sim[rep_iterate]))
@@ -190,15 +190,6 @@ for (item_iterate in 1:length(num_items)){
         start_alpha <- rep(1, num_items)
         
         # Thresholds will be obtained using regression equation from King (2017):
-        # Taui0 = 0
-        # O_i=1.002+0.449|δ ̃_i |-0.093V_i	
-        # ∆_i=0.921+0.058|δ ̃_i |-0.129V_i	
-        # where:
-        # V_i = the number of response categories for the ith item,
-        # δ ̃_i = the starting value of the ith item on the latent continuum.
-        #The initial values for the kth threshold of the ith item will then be calculated 
-        # from the following equation:
-        #  τ ̃_ik=O_i+∆_i (C_i-k_i )	
         
         start_tau0 <- data.frame()
         for (k in 1:num_cats-1){
