@@ -29,7 +29,7 @@ starting.directory <- data.frame(folders = c(list.dirs(path="Simulation")))  %>%
            str_detect(folders, paste0("REP", !!REP, "$"))) %>%
   dplyr::pull()
 
-file_prefix <- paste0(directory, "/", str_sub(starting.directory, 12), "_")
+file_prefix <- paste0(starting.directory, "/", str_sub(starting.directory, 12), "_")
 
 source(paste0(file_prefix, "DATA.R"))
 source(paste0(file_prefix, "MODEL.R"))
