@@ -7,8 +7,8 @@
 #' @CELL the cell to be run
 #' @REP the replication to be run
 
-CELL = 1
-REP = 1
+CELL = 4
+REP = 10
 
 # Packages required -----
 packages <- c("tidyverse", "ggplot2", "openxlsx", "rjags", "coda", "tictoc", "gridExtra", "R2jags",
@@ -29,7 +29,7 @@ starting.directory <- data.frame(folders = c(list.dirs(path="Simulation")))  %>%
            str_detect(folders, paste0("REP", !!REP, "$"))) %>%
   dplyr::pull()
 
-file_prefix <- paste0(directory, "/", str_sub(directory, 12), "_")
+file_prefix <- paste0(directory, "/", str_sub(starting.directory, 12), "_")
 
 source(paste0(file_prefix, "DATA.R"))
 source(paste0(file_prefix, "MODEL.R"))
