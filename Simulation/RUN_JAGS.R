@@ -7,8 +7,8 @@
 #' @CELL the cell to be run
 #' @REP the replication to be run
 
-CELL = 4
-REP = 10
+CELL = 5
+REP_ALL = c(1:10)
 
 # Packages required -----
 packages <- c("tidyverse", "ggplot2", "openxlsx", "rjags", "coda", "tictoc", "gridExtra", "R2jags",
@@ -23,6 +23,10 @@ if (any(installed_packages == FALSE)) {
 # Load packages -----
 invisible(lapply(packages, library, character.only = TRUE))
 
+for (reps in 1:length(REP_ALL)) {
+  
+  REP <- REP_ALL[reps]
+  
 # Call appropriate directories
 starting.directory <- data.frame(folders = c(list.dirs(path="Simulation")))  %>%
   filter(str_detect(folders, paste0("CELL", !!CELL)) & 
@@ -30,6 +34,8 @@ starting.directory <- data.frame(folders = c(list.dirs(path="Simulation")))  %>%
   dplyr::pull()
 
 file_prefix <- paste0(starting.directory, "/", str_sub(starting.directory, 12), "_")
+
+print(file_prefix)
 
 source(paste0(file_prefix, "DATA.R"))
 source(paste0(file_prefix, "MODEL.R"))
@@ -92,7 +98,7 @@ b <- data.frame(truth = readWorkbook(fileName, sheet = "b true", colNames = FALS
   ) %>%
   relocate(parameter)
 
-tau <- as.data.frame(readWorkbook(fileName, sheet = "tau true", colNames = FALSE, sep = ",")[, 1:6]) %>%
+tau <- as.data.frame(readWorkbook(fileName, sheet = "tau true", colNames = FALSE, sep = ",")) %>%
   tibble::rownames_to_column() %>%
   pivot_longer(!rowname, names_to = "parameter", values_to = "truth") %>%
   dplyr::mutate(
@@ -121,7 +127,8 @@ wb <- openxlsx::createWorkbook()
 openxlsx::addWorksheet(wb, "estimates")
 openxlsx::addWorksheet(wb, "comparison")
 
-openxlsx::writeData(wb, "resp", jags_rsp, colNames=FALSE, rowNames=FALSE)
+openxlsx::writeData(wb, "estimates", estimates, colNames=FALSE, rowNames=FALSE)
+openxlsx::writeData(wb, "comparison", df, colNames=FALSE, rowNames=FALSE)
 
 openxlsx::saveWorkbook(wb, file = paste0(file_prefix, "_ESTIMATES.xlsx"), overwrite=TRUE)
 
@@ -181,3 +188,6 @@ grid.arrange(
 )
 
 print(Sys.time())
+rm(list=setdiff(ls(), c("reps", "CELL", "REP_ALL")))
+gc()
+}
