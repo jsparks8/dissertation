@@ -8,7 +8,7 @@
 #' @REP the replication to be run
 
 CELL = 5
-REP_ALL = c(1:10)
+REP_ALL = c(10:8)
 
 # Packages required -----
 packages <- c("tidyverse", "ggplot2", "openxlsx", "rjags", "coda", "tictoc", "gridExtra", "R2jags",
@@ -130,7 +130,7 @@ openxlsx::addWorksheet(wb, "comparison")
 openxlsx::writeData(wb, "estimates", estimates, colNames=FALSE, rowNames=FALSE)
 openxlsx::writeData(wb, "comparison", df, colNames=FALSE, rowNames=FALSE)
 
-openxlsx::saveWorkbook(wb, file = paste0(file_prefix, "_ESTIMATES.xlsx"), overwrite=TRUE)
+openxlsx::saveWorkbook(wb, file = paste0(file_prefix, "ESTIMATES.xlsx"), overwrite=TRUE)
 
 # save comparison plot ----
 g <- arrangeGrob(
@@ -164,20 +164,14 @@ coda::autocorr.plot(samples)
 dev.off()
 
 # save timer ---
-sink(paste0(
-  file_prefix, "tictoc.txt"
-))
-tic.log(format = TRUE)
-Sys.time()
-sink(file=NULL)
+write.csv(log.txt, paste0(
+  file_prefix, "tictoc.csv"
+), row.names=FALSE)
 
 # save Gelman-Rubin index ---
-sink(paste0(
-  file_prefix, "gelman.txt"
+write.csv(gelman.diag(samples, multivariate = FALSE)[["psrf"]], paste0(
+  file_prefix, "gelman.csv"
 ))
-gelman.diag(samples, multivariate = FALSE)
-sink(file=NULL)
-sink(file=NULL)
 
 # print plot for easy reference ----
 grid.arrange(
@@ -188,6 +182,8 @@ grid.arrange(
 )
 
 print(Sys.time())
+tic.clearlog()
+print(file_prefix)
 rm(list=setdiff(ls(), c("reps", "CELL", "REP_ALL")))
 gc()
 }
