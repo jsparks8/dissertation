@@ -8,7 +8,7 @@
 #' @REP the replication to be run
 
 CELL = 1
-REP_ALL = c(4)
+REP_ALL = c(1)
 
 # Packages required -----
 packages <- c("tidyverse", "ggplot2", "openxlsx", "rjags", "coda", "tictoc", "gridExtra", "R2jags",
@@ -23,10 +23,11 @@ if (any(installed_packages == FALSE)) {
 # Load packages -----
 invisible(lapply(packages, library, character.only = TRUE))
 
-for (reps in 1:length(REP_ALL)) {
-  
-  REP <- REP_ALL[reps]
-  
+#for (reps in 1:length(REP_ALL)) {
+
+#  REP <- REP_ALL[reps]
+REP <- 1
+
 # Call appropriate directories
 starting.directory <- data.frame(folders = c(list.dirs(path="Simulation")))  %>%
   filter(str_detect(folders, paste0("CELL", !!CELL)) & 
@@ -38,9 +39,12 @@ file_prefix <- paste0(starting.directory, "/", str_sub(starting.directory, 12), 
 print(file_prefix)
 
 source(paste0(file_prefix, "DATA.R"))
-source(paste0(file_prefix, "MODEL.R"))
+source(paste0(file_prefix, "DATA_RT.R"))
+source(paste0(file_prefix, "MODEL GGUM-RT TEST.r"))
 
 model1.spec<-textConnection(model)
+
+
 
 tic()
 tic()
@@ -58,7 +62,7 @@ tic()
 # Retained iterations
 samples <- coda.samples(
   jags,
-  c('a', 'b', 'tau', 'theta'),
+  c('a', 'b', 'tau', 'theta', 'z_b0', 'z_b1', 'z_b2'),
   5000
 )
 toc(log = TRUE)
@@ -130,7 +134,7 @@ openxlsx::addWorksheet(wb, "comparison")
 openxlsx::writeData(wb, "estimates", estimates, colNames=FALSE, rowNames=FALSE)
 openxlsx::writeData(wb, "comparison", df, colNames=FALSE, rowNames=FALSE)
 
-openxlsx::saveWorkbook(wb, file = paste0(file_prefix, "ESTIMATES.xlsx"), overwrite=TRUE)
+openxlsx::saveWorkbook(wb, file = paste0(file_prefix, "ESTIMATES GGUM-RT.xlsx"), overwrite=TRUE)
 
 # save comparison plot ----
 g <- arrangeGrob(
@@ -141,36 +145,36 @@ g <- arrangeGrob(
 )
 
 ggsave(paste0(
-  file_prefix, "comparison_plot.png"
+  file_prefix, "comparison_plot GGUM-RT.png"
 ), g)
 
 # save environment ----
 save.image(file = paste0(
-  file_prefix, "Environment.RData"
+  file_prefix, "Environment GGUM-RT.RData"
 ))
 
 # save trace plots --- 
 pdf(paste0(
-  file_prefix, "trace_plot.pdf"
+  file_prefix, "trace_plot GGUM-RT.pdf"
 ))  
 R2jags::traceplot(samples)
 dev.off()		
 
 # save autocorrelation plots ---
 pdf(paste0(
-  file_prefix, "autocorrelation_plot.pdf"
+  file_prefix, "autocorrelation_plot GGUM-RT.pdf"
 ))
 coda::autocorr.plot(samples)
 dev.off()
 
 # save timer ---
 write.csv(log.txt, paste0(
-  file_prefix, "tictoc.csv"
+  file_prefix, "tictoc GGUM-RT.csv"
 ), row.names=FALSE)
 
 # save Gelman-Rubin index ---
 write.csv(gelman.diag(samples, multivariate = FALSE)[["psrf"]], paste0(
-  file_prefix, "gelman.csv"
+  file_prefix, "gelman GGUM-RT.csv"
 ))
 
 # print plot for easy reference ----
@@ -184,6 +188,6 @@ grid.arrange(
 print(Sys.time())
 tic.clearlog()
 print(file_prefix)
-rm(list=setdiff(ls(), c("reps", "CELL", "REP_ALL")))
-gc()
-}
+# rm(list=setdiff(ls(), c("reps", "CELL", "REP_ALL")))
+# gc()
+#}

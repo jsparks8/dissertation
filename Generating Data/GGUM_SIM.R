@@ -144,15 +144,15 @@ for (item_iterate in 1:length(num_items_sim)){
             
             # Generating response times
             b0 <- 4500
-            b1 <- 350
-            b2 <- -14
+            b1 <- 400
+            b2 <- -20
             
             Dist <- theta-b
             Dist_sqd <- (theta-b)^2
             
             rt <- (b0 + 
                      b1*Dist_sqd + 
-                     b2*(Dist_sqd^2)) + rnorm(1, mean=0, sd=2800)
+                     b2*(Dist_sqd^2)) + rnorm(1, mean=0, sd=500)
             
             rt <- ifelse(rt < 200, 200, rt)
             
@@ -201,15 +201,15 @@ for (item_iterate in 1:length(num_items_sim)){
               
               # Generating response times
               b0 <- 4500
-              b1 <- 350
-              b2 <- -14
+              b1 <- 400
+              b2 <- -20
               
               Dist <- theta-b
               Dist_sqd <- (theta-b)^2
               
               rt <- (b0 + 
                        b1*Dist_sqd + 
-                       b2*(Dist_sqd^2)) + rnorm(1, mean=0, sd=2800)
+                       b2*(Dist_sqd^2)) + rnorm(1, mean=0, sd=500)
               
               rt <- ifelse(rt < 200, 200, rt)
               
@@ -220,7 +220,7 @@ for (item_iterate in 1:length(num_items_sim)){
             }
           }
         }
-
+        
         # Starting Values ---
         # Starting values for item locations and thetas will be obtained by DCA
         # and retaining first dimension
@@ -286,6 +286,9 @@ for (item_iterate in 1:length(num_items_sim)){
         source("Generating Data/creating jags files.R")
         
       }
+  
+
+  
   cell <- cell+1
 }
   }

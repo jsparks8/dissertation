@@ -7,7 +7,7 @@
 #' @CELL the cell to be run
 #' @REP the replication to be run
 
-CELL = 1
+CELL = 5
 REP_ALL = c(4)
 
 # Packages required -----
